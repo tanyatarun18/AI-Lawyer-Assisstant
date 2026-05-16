@@ -22,33 +22,21 @@ class LawBotOrchestrator:
 
         self.reasoning_agent = ReasoningAgent()
 
-        # -----------------------------------
-        # BUILD / LOAD KNOWLEDGE BASE
-        # -----------------------------------
+
 
         self.rag_agent.process_raw_data()
 
         self.rag_agent.load_knowledge()
 
-    # -----------------------------------
-    # MAIN RUN FUNCTION
-    # -----------------------------------
 
     def run(self, user_query):
 
-        # -----------------------------------
-        # LANGUAGE DETECTION
-        # -----------------------------------
+
 
         self.lang_agent.detect(user_query)
 
         query_low = user_query.lower()
 
-        # -----------------------------------
-        # HANDLE AMBIGUOUS SECTION QUERIES
-        # Example:
-        # "what is section 17?"
-        # -----------------------------------
 
         has_section = re.search(
             r'\bsection\s+\d+[a-z]?\b',
@@ -84,31 +72,22 @@ class LawBotOrchestrator:
 
             return
 
-        # -----------------------------------
-        # SEARCH LOCAL DATABASE
-        # -----------------------------------
 
         context_chunks = self.rag_agent.search(
             user_query,
             k=1
         )
 
-        # -----------------------------------
-        # DEBUG SCORES
-        # -----------------------------------
 
-        # Uncomment if needed later
 
         # print("\nTOP SCORES:\n")
         #
         # for s, c in scored[:5]:
         #     print(f"SCORE={s} | TOPIC={c['topic']}")
         #     print(c['text'][:200])
-        #     print("\n-------------------\n")
 
-        # -----------------------------------
-        # LOCAL DATABASE RESPONSE
-        # -----------------------------------
+
+
 
         if context_chunks:
 
@@ -118,28 +97,20 @@ class LawBotOrchestrator:
                 [c["text"] for c in context_chunks]
             )
 
-            # -----------------------------------
-            # DEBUG CONTEXT
-            # -----------------------------------
 
-            print("\n========== DEBUG CONTEXT ==========\n")
+            #
+            # print("\n DEBUG CONTEXT\n")
+            #
+            # print(formatted_context[:3000])
 
-            print(formatted_context[:3000])
 
-            print("\n===================================\n")
-
-            # -----------------------------------
-            # GENERATE RESPONSE
-            # -----------------------------------
 
             final_answer = self.reasoning_agent.generate_local(
                 user_query,
                 formatted_context
             )
 
-        # -----------------------------------
-        # CLOUD FALLBACK
-        # -----------------------------------
+
 
         else:
 
@@ -149,16 +120,11 @@ class LawBotOrchestrator:
                 user_query
             )
 
-        # -----------------------------------
-        # FINAL OUTPUT
-        # -----------------------------------
 
         print(f"\n[{source}]\n{final_answer}\n")
 
 
-# -----------------------------------
-# START APPLICATION
-# -----------------------------------
+
 
 if __name__ == "__main__":
 

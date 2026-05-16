@@ -15,19 +15,15 @@ def initialize():
     scraper = ScraperAgent()
     rag = RAGAgent()
 
-    # VERIFIED LINKS - Mixing JSON for speed and verified Markdown for newer laws
     legal_sources = {
-        # Core Statutes (Working JSON)
         "IPC_Full": "https://raw.githubusercontent.com/civictech-India/Indian-Law-Penal-Code-Json/main/ipc.json",
         "CrPC_Full": "https://raw.githubusercontent.com/civictech-India/Indian-Law-Penal-Code-Json/main/crpc.json",
         "Evidence_Act": "https://raw.githubusercontent.com/civictech-India/Indian-Law-Penal-Code-Json/main/iea.json",
         "CPC_Civil": "https://raw.githubusercontent.com/civictech-India/Indian-Law-Penal-Code-Json/main/cpc.json",
 
-        # New & Additional Acts
         "HMA_Marriage": "https://raw.githubusercontent.com/civictech-India/Indian-Law-Penal-Code-Json/main/hma.json",
         "MVA_Motor_Vehicles": "https://raw.githubusercontent.com/civictech-India/Indian-Law-Penal-Code-Json/main/MVA.json",
 
-        # Fixed BNS & Women Rights (Using a more stable mirror)
         "BNS_2023_Guide": "https://raw.githubusercontent.com/nyayasahayak/Nyaysahayak/main/data/bns_data.json",
         "Domestic_Violence_Explained": "https://nyaaya.org/legal-explainer/domestic-violence/"
     }

@@ -54,7 +54,6 @@ class ScraperAgent:
                     # Create a human-readable sentence for the RAG to find
                     lines.append(f"SECTION {section}: {title}. {desc}")
 
-        # If standard list parsing fails, fallback to raw string
         if not lines:
             return json.dumps(data)
 

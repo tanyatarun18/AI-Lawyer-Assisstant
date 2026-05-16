@@ -17,9 +17,7 @@ class ReasoningAgent:
 
         self.model = "llama-3.3-70b-versatile"
 
-    # -----------------------------------
-    # LOCAL RAG ANSWERING
-    # -----------------------------------
+
 
     def generate_local(self, query, context):
 
@@ -36,9 +34,7 @@ class ReasoningAgent:
 
         query_low = query.lower()
 
-        # -----------------------------------
-        # LEGAL QUERY TYPE DETECTION
-        # -----------------------------------
+
 
         legal_help_prompt = ""
 
@@ -82,9 +78,7 @@ class ReasoningAgent:
             "eviction"
         ]
 
-        # -----------------------------------
-        # THEFT GUIDANCE
-        # -----------------------------------
+
 
         if any(w in query_low for w in theft_words):
 
@@ -115,9 +109,7 @@ class ReasoningAgent:
             4. Keep response practical and simple
             """
 
-        # -----------------------------------
-        # FRAUD GUIDANCE
-        # -----------------------------------
+
 
         elif any(w in query_low for w in fraud_words):
 
@@ -131,9 +123,7 @@ class ReasoningAgent:
             4. Keep answer practical and easy
             """
 
-        # -----------------------------------
-        # ASSAULT GUIDANCE
-        # -----------------------------------
+
 
         elif any(w in query_low for w in assault_words):
 
@@ -147,9 +137,7 @@ class ReasoningAgent:
             4. Keep answer simple
             """
 
-        # -----------------------------------
-        # LANDLORD / RENT ISSUES
-        # -----------------------------------
+
 
         elif any(w in query_low for w in landlord_words):
 
@@ -163,9 +151,7 @@ class ReasoningAgent:
             4. Keep response simple
             """
 
-        # -----------------------------------
-        # DEFAULT
-        # -----------------------------------
+
 
         else:
 
@@ -175,9 +161,7 @@ class ReasoningAgent:
             Explain in simple language.
             """
 
-        # -----------------------------------
-        # FINAL PROMPT
-        # -----------------------------------
+
 
         prompt = f"""
         STRICT RULES:
@@ -221,9 +205,7 @@ class ReasoningAgent:
 
             return f"System Error: {str(e)}"
 
-    # -----------------------------------
-    # CLOUD FALLBACK
-    # -----------------------------------
+
 
     def generate_cloud_fallback(self, query):
 

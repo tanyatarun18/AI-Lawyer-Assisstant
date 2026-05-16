@@ -1,10 +1,8 @@
-# agents/language_agent.py
 from core.logger import log_agent
 
 
 class LanguageAgent:
     def __init__(self):
-        # Keywords to help identify Hinglish/Hindi
         self.hindi_keywords = ['kya', 'kaise', 'hai', 'mein', 'batao', 'namaste', 'shukriya']
 
     def detect(self, text):

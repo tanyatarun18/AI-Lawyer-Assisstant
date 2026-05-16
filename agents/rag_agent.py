@@ -16,9 +16,6 @@ class RAGAgent:
 
         self.section_index = {}
 
-    # -----------------------------------
-    # LOAD KNOWLEDGE BASE
-    # -----------------------------------
 
     def load_knowledge(self):
 
@@ -63,9 +60,6 @@ class RAGAgent:
             f"Index built: {len(self.section_index)} sections mapped."
         )
 
-    # -----------------------------------
-    # PROCESS RAW DATA
-    # -----------------------------------
 
     def process_raw_data(self):
 
@@ -129,9 +123,6 @@ class RAGAgent:
 
                         continue
 
-                    # -----------------------------------
-                    # LIMIT CHUNK SIZE
-                    # -----------------------------------
 
                     MAX_CHARS = 1200
 
@@ -186,9 +177,7 @@ class RAGAgent:
 
         self.load_knowledge()
 
-    # -----------------------------------
-    # SEARCH FUNCTION
-    # -----------------------------------
+
 
     def search(self, query, k=1):
 
@@ -196,9 +185,6 @@ class RAGAgent:
 
         results = []
 
-        # -----------------------------------
-        # HINDI NORMALIZATION
-        # -----------------------------------
 
         hindi_map = {
 
@@ -233,10 +219,6 @@ class RAGAgent:
                 h,
                 e
             )
-
-        # -----------------------------------
-        # MULTILINGUAL ACT DETECTION
-        # -----------------------------------
 
         target_act = None
 
@@ -292,9 +274,6 @@ class RAGAgent:
 
             target_act = "evidence"
 
-        # -----------------------------------
-        # EXTRACT SECTION NUMBERS
-        # -----------------------------------
 
         query_sections = re.findall(
             r'\b\d+[A-Z]?\b',
@@ -303,9 +282,6 @@ class RAGAgent:
 
         scored = []
 
-        # -----------------------------------
-        # SCORE CHUNKS
-        # -----------------------------------
 
         for chunk in self.kb:
 
@@ -315,9 +291,6 @@ class RAGAgent:
 
             score = 0
 
-            # -----------------------------------
-            # ACT BOOST
-            # -----------------------------------
 
             if target_act:
 
@@ -329,9 +302,7 @@ class RAGAgent:
 
                     score -= 200
 
-            # -----------------------------------
-            # STRICT SECTION MATCHING
-            # -----------------------------------
+
 
             for sec in query_sections:
 
@@ -361,9 +332,6 @@ class RAGAgent:
 
                     score += 200
 
-            # -----------------------------------
-            # KEYWORD BOOST
-            # -----------------------------------
 
             query_words = [
 
@@ -378,9 +346,7 @@ class RAGAgent:
 
                     score += 20
 
-            # -----------------------------------
-            # LEGAL INTENT DETECTION
-            # -----------------------------------
+
 
             theft_words = [
 
@@ -400,7 +366,6 @@ class RAGAgent:
                 "report"
             ]
 
-            # Theft queries
 
             if any(
                 w in normalized_query
@@ -423,7 +388,6 @@ class RAGAgent:
 
                     score += 200
 
-            # FIR queries
 
             if any(
                 w in normalized_query
@@ -445,44 +409,32 @@ class RAGAgent:
 
                     score += 200
 
-            # -----------------------------------
-            # SAVE RESULTS
-            # -----------------------------------
-
             if score > 0:
 
                 scored.append(
                     (score, chunk)
                 )
 
-        # -----------------------------------
-        # SORT RESULTS
-        # -----------------------------------
-
         scored.sort(
             key=lambda x: x[0],
             reverse=True
         )
 
-        # -----------------------------------
-        # DEBUG OUTPUT
-        # -----------------------------------
 
-        print("\nTOP SCORES:\n")
 
-        for s, c in scored[:5]:
+        # print("\nTOP SCORES:\n")
+        #
+        # for s, c in scored[:5]:
+        #
+        #     print(
+        #         f"SCORE={s} | TOPIC={c['topic']}"
+        #     )
+        #
+        #     print(c["text"][:200])
+        #
+        #     print("\n-------------------\n")
 
-            print(
-                f"SCORE={s} | TOPIC={c['topic']}"
-            )
 
-            print(c["text"][:200])
-
-            print("\n-------------------\n")
-
-        # -----------------------------------
-        # FINAL RESULTS
-        # -----------------------------------
 
         MIN_SCORE = 300
 
